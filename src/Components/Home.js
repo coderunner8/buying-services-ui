@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import Grid from "@material-ui/core/Grid";
 import "./Custom.css";
 import "./index.css";
+import Footer from "./Footer";
 
 function Home() {
   const useStyles = makeStyles((theme) => ({
@@ -14,6 +15,7 @@ function Home() {
       display: "flex",
       flexDirection: "column",
       alignItems: "center",
+      marginBottom: theme.spacing(5),
     },
     form: {
       width: "100%",
@@ -31,6 +33,7 @@ function Home() {
       fontWeight: "bold",
       display: "flex",
       alignItems: "center",
+      
       justifyContent: "center",
       height: 48,
       padding: "0px 80px",
@@ -40,7 +43,7 @@ function Home() {
 
   const classes = useStyles();
   return (
-    <div>
+    <div >
       <h1 className="custom-title">Welcome, Let's get Started</h1>
       <div className="auth-wrapper">
         <div className={classes.paper}>
@@ -51,14 +54,14 @@ function Home() {
                   <h3 className="App-head">Buyer</h3>
                   <p className="App-head">Ship from the solace of your home</p>
                   <p className="App-body">
-                    This can give you more flexibility and control by offering
+                    This tool gives you more flexibility and control by offering
                     Quotations from different vendors and options to select
                     preffered vendor according to your needs. It’s easy to use
                     this feature, just one click away.
                   </p>
 
                   <StyledButton component={Link} to="/user-sign-in">
-                    Click to proceed as a Buyer
+                    Click here!
                   </StyledButton>
                 </div>
               </div>
@@ -75,14 +78,17 @@ function Home() {
                     this feature, just one click away.
                   </p>
                   <StyledButton component={Link} to="/vendor-sign-in">
-                    Click to proceed as a Vendor
+                    Click here!
                   </StyledButton>
                 </div>
               </div>
             </Grid>
+            
           </Grid>
+          
         </div>
       </div>
+      <Footer/>
     </div>
   );
 }

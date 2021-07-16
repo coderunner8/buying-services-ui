@@ -1,4 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@500&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Fira+Sans:400,500,600,700,800');
+@import url('https://fonts.googleapis.com/css2?family=Lato:wght@300&display=swap');
 
 .App {
   text-align: center;
@@ -45,6 +47,43 @@
 .App-link {
   color: #10262c;
   font-size: calc(75px + 2vmin);
+}
+
+.App-footer{
+  background-color: #d8e2ee;
+  color: #167bff;
+  font-weight: bold;
+   text-align: center;
+  
+}
+
+.App-foot{
+  background-color: #ffffff;
+  justify-content: center;
+  font-family: 'Lato', sans-serif;
+  font-weight: bold;
+  text-align: center;
+}
+
+.App-foot h3{
+  text-align: left;
+  font-size: calc(10px + 2vmin);
+  font-family: 'Cinzel', serif;
+  font-weight: bold;
+}
+
+.App-foot h4{
+  text-align: left;
+  padding-top: 30px;
+  font-size: calc(6px + 2vmin);
+  font-family: 'Cinzel', serif;
+  font-weight: bold;
+}
+
+.App-foot p{
+  text-align: left;
+  font-size: 15px;
+  
 }
 
 @keyframes App-logo-spin {

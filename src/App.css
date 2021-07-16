@@ -32,6 +32,18 @@
   text-align: center;
 }
 
+.App-footer{
+  background-color:white;
+  font-family: 'Cinzel', serif;
+  color: #167bff;
+  position:fixed ;
+   left: 0;
+   bottom: 0;
+   width: 100%;
+   text-align: center;
+  
+}
+
 .App-Nav {
   
   font-family: 'Cinzel', serif;

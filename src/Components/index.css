@@ -1,6 +1,7 @@
 @import url('https://fonts.googleapis.com/css?family=Fira+Sans:400,500,600,700,800');
 @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@500&display=swap');
 
+
 * {
   box-sizing: border-box;
 }
@@ -32,6 +33,7 @@ body, html, .App, #root, .auth-wrapper {
   justify-content: center;
   flex-direction: column;
   text-align: left;
+  padding-bottom: 100px;
 }
 
 .auth-inner {
