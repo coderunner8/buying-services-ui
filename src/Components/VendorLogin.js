@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useRef } from "react";
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -11,7 +11,11 @@ import { makeStyles, withStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import "./Custom.css";
 import "./index.css";
-import SignUp from "./SignUp";
+import Footer from "./Footer";
+import Form from "react-validation/build/form";
+import CheckButton from "react-validation/build/button";
+
+import AuthService from "../Service/auth.service";
 
 function Copyright() {
   return (
@@ -25,6 +29,26 @@ function Copyright() {
     </Typography>
   );
 }
+
+const required = (value) => {
+  if (!value) {
+    return (
+      <div className="alert alert-danger" role="alert">
+        This field is required!
+      </div>
+    );
+  }
+};
+
+const vusername = (value) => {
+  if (value.length < 3 || value.length > 20) {
+    return (
+      <div className="alert alert-danger" role="alert">
+        The username must be between 3 and 20 characters.
+      </div>
+    );
+  }
+};
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -64,68 +88,140 @@ const StyledButton = withStyles((theme) => ({
     },
   }))(Button);
 
-export default function VendorLogin() {
-  const classes = useStyles();
-
-  return (
-    <div className="auth-wrapper">
-      <div className="auth-inner">
-        <Container component="main" maxWidth="xs">
-          <CssBaseline />
-          <div className={classes.paper}>
-            <Avatar className={classes.avatar}></Avatar>
-            <Typography component="h1" variant="h4">
-              <div className="App-head">Login to your Account</div>
-            </Typography>
-            <form className={classes.form} noValidate>
-              <Grid container spacing={2}>
-                <Grid item xs={12}>
-                  <TextField
-                    variant="outlined"
-                    required
+  const VendorLogin = (props) => {
+    const form = useRef();
+    const checkBtn = useRef();
+    const role="Vendor";
+  
+    const [password, setPassword] = useState("");
+    const [loading, setLoading] = useState(false);
+    const [message, setMessage] = useState("");
+    const [username, setUsername] = useState("");
+  
+    const onChangeUsername = (e) => {
+      setUsername(e.target.value);
+    };
+  
+    const onChangePassword = (e) => {
+      setPassword(e.target.value);
+    };
+  
+    const handleLogin = (e) => {
+      e.preventDefault();
+  
+      setMessage("");
+      setLoading(true);
+  
+      form.current.validateAll();
+  
+      if (checkBtn.current.context._errors.length === 0) {
+        AuthService.login(username, password,role).then(
+          () => {
+            props.history.push("/vendor-profile");
+            window.location.reload();
+          },
+          (error) => {
+            const resMessage =
+              (error.response &&
+                error.response.data &&
+                error.response.data.message) ||
+              error.message ||
+              error.toString();
+  
+            setLoading(false);
+            setMessage(resMessage);
+          }
+        );
+      } else {
+        setLoading(false);
+      }
+    };
+    const classes = useStyles();
+  
+    return (
+      <div>
+        <div className="auth-wrapper">
+          <div className="auth-inner">
+            <Container component="main" maxWidth="xs">
+              <CssBaseline />
+              <div className={classes.paper}>
+                <Avatar className={classes.avatar}></Avatar>
+                <Typography component="h1" variant="h4">
+                  <div className="App-head">Login to your Account</div>
+                </Typography>
+                <Form
+                  onSubmit={handleLogin}
+                  className={classes.form}
+                  ref={form}
+                >
+                  <Grid container spacing={2}>
+                    <Grid item xs={12}>
+                      <label htmlFor="username"></label>
+                      <TextField
+                        variant="outlined"
+                        required
+                        fullWidth
+                        id="username"
+                        label="Username"
+                        name="username"
+                        value={username}
+                        onChange={onChangeUsername}
+                        autoComplete="username"
+                        validations={[required, vusername]}
+                      />
+                    </Grid>
+                    <Grid item xs={12}>
+                      <label htmlFor="password"></label>
+                      <TextField
+                        variant="outlined"
+                        required
+                        fullWidth
+                        name="password"
+                        value={password}
+                        onChange={onChangePassword}
+                        validations={[required]}
+                        label="Password"
+                        type="password"
+                        id="password"
+                        autoComplete="current-password"
+                      />
+                    </Grid>
+                  </Grid>
+                  <StyledButton
+                    type="submit"
                     fullWidth
-                    id="email"
-                    label="Email Address"
-                    name="email"
-                    autoComplete="email"
-                  />
-                </Grid>
-                <Grid item xs={12}>
-                  <TextField
-                    variant="outlined"
-                    required
-                    fullWidth
-                    name="password"
-                    label="Password"
-                    type="password"
-                    id="password"
-                    autoComplete="current-password"
-                  />
-                </Grid>
-              </Grid>
-              <StyledButton
-                type="submit"
-                fullWidth
-                variant="contained"
-                color="primary"
-                className={classes.submit}
-              >
-                Login
-              </StyledButton>
-              <Grid container justify="flex-end">
-                <Grid item>
-                  <Link href="/sign-up" to={"/sign-up"}>
-                    Click here to Register
-                  </Link>
-                </Grid>
-              </Grid>
-            </form>
+                    variant="contained"
+                    color="primary"
+                    className={classes.submit}
+                  >
+                    Login
+                  </StyledButton>
+                  {message && (
+                    <div className="form-group">
+                      <div className="alert alert-danger" role="alert">
+                        {message}
+                      </div>
+                    </div>
+                  )}
+                  <Grid container justify="flex-end">
+                    <Grid item>
+                      <Link href="/vendor-sign-up" to={"/vendor-sign-up"}>
+                        Click here to Register
+                      </Link>
+                    </Grid>
+                  </Grid>
+                  <CheckButton style={{ display: "none" }} ref={checkBtn} />
+                </Form>
+              </div>
+              <Box mt={5}>
+                <Copyright />
+              </Box>
+            </Container>
           </div>
-          <Box mt={5}>
-            <Copyright />
-          </Box>
-        </Container>
+        </div>
+        <Footer />
       </div>
-    </div>
-  );
-}
+    );
+  };
+  
+  export default VendorLogin;

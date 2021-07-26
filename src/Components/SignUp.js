@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useRef } from "react";
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -11,6 +11,52 @@ import { makeStyles, withStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import "./Custom.css";
 import Footer from "./Footer";
+
+import Form from "react-validation/build/form";
+import CheckButton from "react-validation/build/button";
+import { isEmail } from "validator";
+
+import AuthService from "../Service/auth.service";
+
+const required = (value) => {
+  if (!value) {
+    return (
+      <div className="alert alert-danger" role="alert">
+        This field is required!
+      </div>
+    );
+  }
+};
+
+const validEmail = (value) => {
+  if (!isEmail(value)) {
+    return (
+      <div className="alert alert-danger" role="alert">
+        This is not a valid email.
+      </div>
+    );
+  }
+};
+
+const vpassword = (value) => {
+  if (value.length < 6 || value.length > 40) {
+    return (
+      <div className="alert alert-danger" role="alert">
+        The password must be between 6 and 40 characters.
+      </div>
+    );
+  }
+};
+
+const vusername = (value) => {
+  if (value.length < 3 || value.length > 20) {
+    return (
+      <div className="alert alert-danger" role="alert">
+        The username must be between 3 and 20 characters.
+      </div>
+    );
+  }
+};
 
 function Copyright() {
   return (
@@ -63,7 +109,76 @@ const StyledButton = withStyles((theme) => ({
   },
 }))(Button);
 
-export default function SignUp() {
+const SignUp = (props) =>{
+  const form = useRef();
+  const checkBtn = useRef();
+  const company="NA";
+  const registration="NA";
+
+  const [email, setEmail] = useState("");
+  const [fname, setFname] = useState("");
+  const [username, setUsername] = useState("");
+  const [lname, setLname] = useState("");
+  const [password, setPassword] = useState("");
+  const [successful, setSuccessful] = useState(false);
+  const [message, setMessage] = useState("");
+  let role="Buyer";
+
+  const onChangeEmail = (e) => {
+    const email = e.target.value;
+    setEmail(email);
+  };
+
+  const onChangeUsername = (e) => {
+    const username = e.target.value;
+    setUsername(username);
+  };
+
+  const onChangeFname = (e) => {
+    const fname = e.target.value;
+    setFname(fname);
+  };
+
+  const onChangeLname = (e) => {
+    const lname = e.target.value;
+    setLname(lname);
+  };
+
+  const onChangePassword = (e) => {
+    const password = e.target.value;
+    setPassword(password);
+  };
+
+  const handleRegister = (e) => {
+    e.preventDefault();
+
+    setMessage("");
+    setSuccessful(false);
+
+    form.current.validateAll();
+
+    if (checkBtn.current.context._errors.length === 0) {
+      AuthService.register(fname,lname,username,email, password,company,registration,role).then(
+        (response) => {
+          setMessage(response.data.message); 
+          setSuccessful(true);
+          props.history.push("/user-sign-in");
+          window.location.reload();
+        },
+        (error) => {
+          const resMessage =
+            (error.response &&
+              error.response.data &&
+              error.response.data.message) ||
+            error.message ||
+            error.toString();
+
+          setMessage(resMessage);
+          setSuccessful(false);
+        }
+      );
+    }
+  };
   const classes = useStyles();
 
   return (
@@ -77,17 +192,22 @@ export default function SignUp() {
               <Typography component="h1" variant="h4">
                 <div className="App-head">Create your Account</div>
               </Typography>
-              <form className={classes.form} noValidate>
+              <Form
+                onSubmit={handleRegister}
+                className={classes.form}
+                ref={form}
+              >
                 <Grid container spacing={2}>
                   <Grid item xs={12} sm={6}>
                     <TextField
                       autoComplete="fname"
-                      name="firstName"
                       variant="outlined"
                       required
                       fullWidth
-                      id="firstName"
+                      name="firstname"
                       label="First Name"
+                      value={fname}
+                      onChange={onChangeFname}
                       autoFocus
                     />
                   </Grid>
@@ -96,9 +216,10 @@ export default function SignUp() {
                       variant="outlined"
                       required
                       fullWidth
-                      id="lastName"
                       label="Last Name"
                       name="lastName"
+                      value={lname}
+                      onChange={onChangeLname}
                       autoComplete="lname"
                     />
                   </Grid>
@@ -107,9 +228,24 @@ export default function SignUp() {
                       variant="outlined"
                       required
                       fullWidth
-                      id="email"
+                      label="Username"
+                      name="username"
+                      value={username}
+                      onChange={onChangeUsername}
+                      validations={[required, vusername]}
+                      autoComplete="username"
+                    />
+                    </Grid>
+                  <Grid item xs={12}>
+                    <TextField
+                      variant="outlined"
+                      required
+                      fullWidth
                       label="Email Address"
                       name="email"
+                      value={email}
+                      onChange={onChangeEmail}
+                      validations={[required, validEmail]}
                       autoComplete="email"
                     />
                   </Grid>
@@ -120,8 +256,10 @@ export default function SignUp() {
                       fullWidth
                       name="password"
                       label="Password"
+                      value={password}
                       type="password"
-                      id="password"
+                      onChange={onChangePassword}
+                      validations={[required, vpassword]}
                       autoComplete="current-password"
                     />
                   </Grid>
@@ -135,6 +273,17 @@ export default function SignUp() {
                 >
                   Register
                 </StyledButton>
+                {message && (
+            <div className="form-group">
+              <div
+                className={ successful ? "alert alert-success" : "alert alert-danger" }
+                role="alert"
+              >
+                {message}
+              </div>
+            </div>
+          )}
+          <CheckButton style={{ display: "none" }} ref={checkBtn} />
                 <Grid container justify="flex-end">
                   <Grid item>
                     <Link href="/user-sign-in" variant="body2">
@@ -142,7 +291,7 @@ export default function SignUp() {
                     </Link>
                   </Grid>
                 </Grid>
-              </form>
+              </Form>
             </div>
             <Box mt={5}>
               <Copyright />
@@ -153,4 +302,6 @@ export default function SignUp() {
       <Footer />
     </div>
   );
-}
+};
+
+export default SignUp;

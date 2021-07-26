@@ -59,10 +59,12 @@ function Home() {
                     preffered vendor according to your needs. It’s easy to use
                     this feature, just one click away.
                   </p>
-
-                  <StyledButton component={Link} to="/user-sign-in">
-                    Click here!
-                  </StyledButton>
+                  <div>
+                        <StyledButton component={Link} to="/user-sign-in">
+                        Click here!
+                      </StyledButton>
+                   
+                    </div>
                 </div>
               </div>
             </Grid>

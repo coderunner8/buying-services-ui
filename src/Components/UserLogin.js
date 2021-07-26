@@ -12,14 +12,10 @@ import Container from "@material-ui/core/Container";
 import "./Custom.css";
 import "./index.css";
 import Footer from "./Footer";
-import SignUp from "./SignUp";
 import Form from "react-validation/build/form";
-import Input from "react-validation/build/input";
 import CheckButton from "react-validation/build/button";
 
 import AuthService from "../Service/auth.service";
-
-import { isEmail } from "validator";
 
 function Copyright() {
   return (
@@ -44,11 +40,11 @@ const required = (value) => {
   }
 };
 
-const emailValidator = (value) => {
-  if (!isEmail(value)) {
+const vusername = (value) => {
+  if (value.length < 3 || value.length > 20) {
     return (
       <div className="alert alert-danger" role="alert">
-        This is not a valid email.
+        The username must be between 3 and 20 characters.
       </div>
     );
   }
@@ -95,14 +91,15 @@ const StyledButton = withStyles((theme) => ({
 const UserLogin = (props) => {
   const form = useRef();
   const checkBtn = useRef();
+  const role="Buyer";
 
-  let [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
+  const [username, setUsername] = useState("");
 
-  const onChangeEmail = (e) => {
-    setEmail(e.target.value);
+  const onChangeUsername = (e) => {
+    setUsername(e.target.value);
   };
 
   const onChangePassword = (e) => {
@@ -118,7 +115,7 @@ const UserLogin = (props) => {
     form.current.validateAll();
 
     if (checkBtn.current.context._errors.length === 0) {
-      AuthService.login(email, password).then(
+      AuthService.login(username, password,role).then(
         () => {
           props.history.push("/profile");
           window.location.reload();
@@ -159,18 +156,18 @@ const UserLogin = (props) => {
               >
                 <Grid container spacing={2}>
                   <Grid item xs={12}>
-                    <label htmlFor="email"></label>
+                    <label htmlFor="username"></label>
                     <TextField
                       variant="outlined"
                       required
                       fullWidth
-                      id="email"
-                      label="Email Address"
-                      name="email"
-                      value={email}
-                      onChange={onChangeEmail}
-                      autoComplete="email"
-                      validations={[required, email]}
+                      id="username"
+                      label="Username"
+                      name="username"
+                      value={username}
+                      onChange={onChangeUsername}
+                      autoComplete="username"
+                      validations={[required, vusername]}
                     />
                   </Grid>
                   <Grid item xs={12}>

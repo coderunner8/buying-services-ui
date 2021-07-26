@@ -1,6 +1,5 @@
 import React from 'react';
 import "./Custom.css";
-import { Link } from "react-router-dom";
 import Grid from "@material-ui/core/Grid";
 import Logo from "./Logo.png";
 
