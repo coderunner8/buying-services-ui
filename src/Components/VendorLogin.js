@@ -147,7 +147,7 @@ const StyledButton = withStyles((theme) => ({
               <div className={classes.paper}>
                 <Avatar className={classes.avatar}></Avatar>
                 <Typography component="h1" variant="h4">
-                  <div className="App-head">Login to your Account</div>
+                  <div className="App-head">Login to Vendor Account</div>
                 </Typography>
                 <Form
                   onSubmit={handleLogin}

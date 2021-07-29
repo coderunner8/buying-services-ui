@@ -4,6 +4,7 @@ import "./User_Profile.css";
 import Button from "@material-ui/core/Button";
 import { Link } from "react-router-dom";
 import { makeStyles, withStyles } from "@material-ui/core/styles";
+import Footer from "./Footer";
 
 const User_Profile = () => {
   const currentUser = AuthService.getCurrentUser();
@@ -44,13 +45,15 @@ const User_Profile = () => {
 
   const classes = useStyles();
   return (
+    <div>
     <div className="App-bod">
       <p>Hello, {currentUser.firstname}</p>
       <div className={classes.paper}>
           <StyledButton component={Link} to="/NewRequest">New Request</StyledButton>
           <StyledButton component={Link} to="/allQuotes">Your Requests</StyledButton>
-          <StyledButton component={Link} to="/vendor-sign-in">Your Responses</StyledButton>
+          <StyledButton component={Link} to="/BuyerPriceList">Your Responses</StyledButton>
       </div>
+    </div>
     </div>
   );
 };

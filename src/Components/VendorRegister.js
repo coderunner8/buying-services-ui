@@ -198,7 +198,7 @@ const VendorRegister = (props) =>{
             <div className={classes.paper}>
               <Avatar className={classes.avatar}></Avatar>
               <Typography component="h1" variant="h4">
-                <div className="App-head">Create your Account</div>
+                <div className="App-head">Create a Vendor Account</div>
               </Typography>
               <Form
                 onSubmit={handleRegister}

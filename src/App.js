@@ -8,12 +8,14 @@ import "./Components/index.css";
 import SignUp from "./Components/SignUp";
 import VendorRegister from "./Components/VendorRegister";
 import UserLogin from "./Components/UserLogin";
+import BuyerPriceList from "./Components/BuyerPriceList";
 import VendorLogin from "./Components/VendorLogin";
 import Profile from "./Components/User_Profile";
 import NewRequest from "./Components/NewRequest";
 import VendorProfile from "./Components/VendorProfile";
 import AllRequests from "./Components/AllRequests";
 import ViewQuotes from "./Components/ViewQuotes";
+import PriceResponses from "./Components/PriceResponses";
 
 import AuthService from "./Service/auth.service";
 
@@ -79,6 +81,8 @@ function App() {
             <Route path="/vendor-sign-in" component={VendorLogin} />
             <Route path="/NewRequest" component={NewRequest} />
             <Route path="/AllRequests" component={AllRequests} />
+            <Route path="/PriceResponses" component={PriceResponses} />
+            <Route path="/BuyerPriceList" component={BuyerPriceList} />
             <Route path="/allQuotes" component={ViewQuotes} />
           </Switch>
         </Grid>

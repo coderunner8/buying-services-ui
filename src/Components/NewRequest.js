@@ -11,6 +11,7 @@ import { makeStyles, withStyles } from "@material-ui/core/styles";
 import "./index.css";
 import AuthService from "../Service/auth.service";
 import CheckButton from "react-validation/build/button";
+import Footer from "./Footer";
 
 const NewRequest = (props) => {
   const form = useRef();
@@ -345,8 +346,11 @@ const NewRequest = (props) => {
               <CheckButton style={{ display: "none" }} ref={checkBtn} />
             </Form>
           </Container>
+          
         </div>
+        
       </div>
+      <Footer />
     </div>
   );
 };

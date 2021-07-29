@@ -3,6 +3,7 @@ import AuthService from "../Service/auth.service";
 import "./User_Profile.css";
 import Button from "@material-ui/core/Button";
 import { Link } from "react-router-dom";
+import Footer from "./Footer";
 import { makeStyles, withStyles } from "@material-ui/core/styles";
 
 const VendorProfile = () => {
@@ -44,12 +45,14 @@ const VendorProfile = () => {
 
   const classes = useStyles();
   return (
+    <div>
     <div className="App-bod">
       <p>Hello, {currentUser.firstname}</p>
       <div className={classes.paper}> 
           <StyledButton component={Link} to="/AllRequests">List of Requests</StyledButton>
-          <StyledButton component={Link} to="/vendor-sign-in">Your Responses</StyledButton>
+          <StyledButton component={Link} to="/PriceResponses">Your Responses</StyledButton>
       </div>
+    </div>
     </div>
   );
 };

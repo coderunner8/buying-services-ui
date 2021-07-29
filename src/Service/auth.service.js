@@ -3,7 +3,16 @@ import authHeader from "./auth-header";
 
 const API_URL = "http://localhost:8080/";
 
-const register = (firstname, lastname, username, email, password,company,registration, role) => {
+const register = (
+  firstname,
+  lastname,
+  username,
+  email,
+  password,
+  company,
+  registration,
+  role
+) => {
   return axios.post(API_URL + "fbb/register/", {
     firstname,
     lastname,
@@ -16,7 +25,7 @@ const register = (firstname, lastname, username, email, password,company,registr
   });
 };
 
-const login = (username, password,role) => {
+const login = (username, password, role) => {
   return axios
     .post(API_URL + "fbb/login", {
       username,
@@ -30,7 +39,6 @@ const login = (username, password,role) => {
 
       return response.data;
     });
-  
 };
 
 const logout = () => {
@@ -41,8 +49,24 @@ const getCurrentUser = () => {
   return JSON.parse(localStorage.getItem("user"));
 };
 
+const setPrice = (price, comments, quoteid) => {
+  return axios.post(
+    API_URL + "vendor/priceEstimate/",
+    { price, comments, quoteid },
+    { headers: authHeader() }
+  );
+};
+
 const getQuotes = () => {
   return axios.get(API_URL + "fbb/allquotes/", { headers: authHeader() });
+};
+
+const getPriceList = () => {
+  return axios.get(API_URL + "fbb/priceList/", { headers: authHeader() });
+};
+
+const priceQuotes = () => {
+  return axios.get(API_URL + "vendor/priceRequests/", { headers: authHeader() });
 };
 
 const allQuotes = () => {
@@ -59,21 +83,26 @@ const getQuoteRequest = (
   cityorigin,
   countrydes,
   provincedes,
-  citydes,
+  citydes
 ) => {
-  return axios.post(API_URL + "fbb/quote/", {
-    commodity,
-    count,
-    weight,
-    dimensions,
-    countryorigin,
-    provinceorigin,
-    cityorigin,
-    countrydes,
-    provincedes,
-    citydes,},{
-    headers: authHeader(),
-  });
+  return axios.post(
+    API_URL + "fbb/quote/",
+    {
+      commodity,
+      count,
+      weight,
+      dimensions,
+      countryorigin,
+      provinceorigin,
+      cityorigin,
+      countrydes,
+      provincedes,
+      citydes,
+    },
+    {
+      headers: authHeader(),
+    }
+  );
 };
 
 export default {
@@ -84,4 +113,7 @@ export default {
   getQuoteRequest,
   getQuotes,
   allQuotes,
+  setPrice,
+  priceQuotes,
+  getPriceList,
 };
